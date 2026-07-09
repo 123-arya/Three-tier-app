@@ -1,3 +1,10 @@
 .env    
 
+.DS_Store
+Thumbs.db
+
 go.sum
+
+.vscode
+.idea
+*.swp
