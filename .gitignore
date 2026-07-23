@@ -12,6 +12,5 @@ Thumbs.db
 *.tfstate
 *.tfstate.backup
 *.tfplan
-
-terraform-key.pub
-terraform-key
+*.terraform-key.pub
+*.terraform-key
