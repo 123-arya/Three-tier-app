@@ -14,3 +14,7 @@ Thumbs.db
 *.tfplan
 *.terraform-key.pub
 *.terraform-key
+
+*.pem
+*.pub
+terraform/terraform-key
