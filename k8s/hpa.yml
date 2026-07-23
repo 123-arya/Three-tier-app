@@ -28,6 +28,6 @@ spec:
       stabilizationWindowSeconds: 300
       policies:
         - type: Pods
-          value: 1
+          value: 2
           periodSeconds: 60
 
