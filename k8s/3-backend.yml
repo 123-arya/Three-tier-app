@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: arya08/skillpulse-backend:latest
+          image: 969079689787.dkr.ecr.us-east-1.amazonaws.com/skillpulse-backend:f425bde
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

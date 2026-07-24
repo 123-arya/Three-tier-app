@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: arya08/skillpulse-frontend:latest
+          image: 969079689787.dkr.ecr.us-east-1.amazonaws.com/skillpulse-frontend:f425bde
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -44,6 +44,7 @@ spec:
               memory: 32Mi
             limits:
               memory: 64Mi
+              cpu: 100m
           livenessProbe:
             httpGet:
               path: /
