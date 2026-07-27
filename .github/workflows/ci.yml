@@ -50,7 +50,7 @@ jobs:
 # Build & Push Backend Image
       - name: Build Backend Image
         run: |
-          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_REPOSITORY }}:${{ github.sha }} ./backend
+          docker build -t /${{ env.BACKEND_REPOSITORY }}:${{ github.sha }} ./backend
 
       - name: Push Backend Image
         run: |
@@ -65,3 +65,8 @@ jobs:
       - name: Push Frontend Image
         run: |
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_REPOSITORY }}:${{ github.sha }}
+
+      - name: Update Kubernetes image tags
+        run: |
+          sed -i "s|skillpulse-backend:.*|skillpulse-backend:${{ github.sha }}|g" k8s/3-backend.yml
+          sed -i "s|skillpulse-frontend:.*|skillpulse-frontend:${{ github.sha }}|g" k8s/4-frontend.yml
