@@ -21,7 +21,7 @@ metadata:
   name: backend
   namespace: skillpulse
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 969079689787.dkr.ecr.us-east-1.amazonaws.com/skillpulse-backend:f425bde679fc55cda34788eb1129148b4f040d0b
+          image: arya08/skillpulse-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
