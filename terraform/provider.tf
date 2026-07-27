@@ -16,8 +16,7 @@ locals {
   vpc_cidr       = var.vpc_cidr
   azs            = slice(data.aws_availability_zones.available.names, 0, var.total_azs)
   private_subnets = var.private_subnet
-  public_subnets  = var.public_subnet   
-
+  public_subnets  = var.public_subnet
   tags = {
     Project   = "skillpulse"
     Managedby = "terraform"
