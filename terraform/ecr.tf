@@ -1,7 +1,7 @@
 module "ecr_frontend" {
   source = "terraform-aws-modules/ecr/aws"
 
-  repository_name = "skillpulse-frontend"
+  repository_name = "frontend"
 
   repository_lifecycle_policy = jsonencode({
     rules = [
@@ -31,7 +31,7 @@ module "ecr_frontend" {
 module "ecr_backend" {
   source = "terraform-aws-modules/ecr/aws"
 
-  repository_name = "skillpulse-backend"
+  repository_name = "backend"
 
   repository_lifecycle_policy = jsonencode({
     rules = [

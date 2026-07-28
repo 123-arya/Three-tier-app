@@ -6,7 +6,7 @@ variable "aws_region" {
 
 variable "cluster_name" {
   type        = string
-  default     = "skillpulse"
+  default     = "server"
 }
 
 variable "vpc_cidr" {
