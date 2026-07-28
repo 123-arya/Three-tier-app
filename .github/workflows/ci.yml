@@ -8,8 +8,8 @@ on:
 
 env:
   region: us-east-1
-  FRONTEND_REPOSITORY: skillpulse-frontend
-  BACKEND_REPOSITORY: skillpulse-backend
+  FRONTEND_REPOSITORY: frontend
+  BACKEND_REPOSITORY: backend
 
 jobs:
   build-and-push:
