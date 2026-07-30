@@ -42,3 +42,21 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/skillpulse-frontend:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/skillpulse-frontend:${{ github.sha }}
+
+      - name: Update Kubernetes deployment manifest
+        run: |
+          sed -i "s|image: ${env.DOCKERHUB_USERNAME}/skillpulse-backend:.*|image: ${env.DOCKERHUB_USERNAME}/skillpulse-backend:${SHA}|"  k8s/3-backend.yml
+          sed -i "s|image: ${env.DOCKERHUB_USERNAME}/skillpulse-frontend:.*|image: ${env.DOCKERHUB_USERNAME}/skillpulse-frontend:${SHA}|" k8s/4-frontend.yml
+      - name: Commit + push if changed
+        env:
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Manifests already pinned to ${SHA}; nothing to commit."
+            exit 0
+          fi
+          git add k8s/20-backend.yaml k8s/30-frontend.yaml
+          git commit -m "deploy: pin backend+frontend to ${SHA:0:7}"
+          git push
