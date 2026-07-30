@@ -5,33 +5,33 @@ module "eks" {
   name               = local.name
   kubernetes_version = var.cluster_version
 
-  endpoint_public_access  = true     #(allows system to connect with cluster)
-  endpoint_private_access = true     #(vpc access)
+  endpoint_public_access  = true #(allows system to connect with cluster)
+  endpoint_private_access = true #(vpc access)
 
-  enable_cluster_creator_admin_permissions = true      #(IAM user who creates the cluster automatically becomes the Kubernetes administrator.)
-  enable_irsa                              = true       #(IRSA stands for IAM Roles for Service Accounts.)
+  enable_cluster_creator_admin_permissions = true #(IAM user who creates the cluster automatically becomes the Kubernetes administrator.)
+  enable_irsa                              = true #(IRSA stands for IAM Roles for Service Accounts.)
 
   # EKS Add-ons (latest versions auto-resolved)
   addons = {
-    coredns = {                 # CoreDNS works like a phonebook.
+    coredns = { # CoreDNS works like a phonebook.
       most_recent = true
     }
-    kube-proxy = {                     # kube-proxy sends traffic to the correct pod.
+    kube-proxy = { # kube-proxy sends traffic to the correct pod.
       most_recent = true
     }
-    vpc-cni = {              #CNI gives IP addresses to pods.
+    vpc-cni = { #CNI gives IP addresses to pods.
       most_recent    = true
       before_compute = true
     }
-    eks-pod-identity-agent = {             #This is the newer AWS method for giving pods IAM permissions.
+    eks-pod-identity-agent = { #This is the newer AWS method for giving pods IAM permissions.
       most_recent    = true
       before_compute = true
     }
-    aws-ebs-csi-driver = {                  # Suppose MySQL needs storage.
+    aws-ebs-csi-driver = { # Suppose MySQL needs storage.
       most_recent              = true
       service_account_role_arn = module.ebs_csi_irsa.iam_role_arn
     }
-    metrics-server = {         # Collects CPU and memory usage.
+    metrics-server = { # Collects CPU and memory usage.
       most_recent = true
     }
   }
