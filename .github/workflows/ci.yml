@@ -6,11 +6,6 @@ on:
 
     workflow_dispatch:
 
-env:
-  region: us-east-1
-  FRONTEND_REPOSITORY: frontend
-  BACKEND_REPOSITORY: backend
-
 jobs:
   build-and-push:
 
@@ -36,37 +31,31 @@ jobs:
         run: go test ./...
 
 #AWS LOGIN
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Docker setup
+        uses: docker/setup-buildx-action@v4
+
+      - uses: docker/login-action@v4
+        if: ${{ vars.DEPLOY_ENABLED == 'true' }}
         with:
-          aws-access-key-id: ${{secrets.ACCESS_KEY}}
-          aws-secret-access-key: ${{secrets.SECRET_ACCESS_KEY}}
-          aws-region: ${{env.region}}
-      
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
 # Build & Push Backend Image
       - name: Build Backend Image
-        run: |
-          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_REPOSITORY }}:${{ github.sha }} ./backend
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend
+          push: ${{ vars.DEPLOY_ENABLED == 'true' }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME != '' && format('{0}/skillpulse-backend:latest', secrets.DOCKERHUB_USERNAME) || 'skillpulse-backend:latest' }}
+            ${{ secrets.DOCKERHUB_USERNAME != '' && format('{0}/skillpulse-backend:{1}', secrets.DOCKERHUB_USERNAME, github.sha) || format('skillpulse-backend:{0}', github.sha) }}
 
-      - name: Push Backend Image
-        run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_REPOSITORY }}:${{ github.sha }}
-
-# Build & Push Frontend Image
-
-      - name: Build Frontend Image
-        run: |
-          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_REPOSITORY }}:${{ github.sha }} ./frontend
-
-      - name: Push Frontend Image
-        run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_REPOSITORY }}:${{ github.sha }}
-
-      - name: Update Kubernetes image tags
-        run: |
-          sed -i "s|skillpulse-backend:.*|skillpulse-backend:${{ github.sha }}|g" k8s/3-backend.yml
-          sed -i "s|skillpulse-frontend:.*|skillpulse-frontend:${{ github.sha }}|g" k8s/4-frontend.yml
+# Build and push frontend Image
+      - name: Build frontend image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./frontend
+          push: ${{ vars.DEPLOY_ENABLED == 'true' }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME != '' && format('{0}/skillpulse-frontend:latest', secrets.DOCKERHUB_USERNAME) || 'skillpulse-frontend:latest' }}
+            ${{ secrets.DOCKERHUB_USERNAME != '' && format('{0}/skillpulse-frontend:{1}', secrets.DOCKERHUB_USERNAME, github.sha) || format('skillpulse-frontend:{0}', github.sha) }}
