@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: arya08/skillpulse-backend:v2
+          image: arya08/skillpulse-backend:<tag>
           imagePullPolicy: Always
           ports:
             - name: http
