@@ -33,8 +33,13 @@ spec:
     spec:
       containers:
         - name: frontend
+<<<<<<< HEAD
           image: arya08/skillpulse-frontend:latest
           imagePullPolicy: IfNotPresent
+=======
+          image: arya08/skillpulse-frontend:8d8c2dc468ea39395165fcd2638507549fccea6c
+          imagePullPolicy: Always
+>>>>>>> refs/remotes/origin/main
           ports:
             - name: http
               containerPort: 80
