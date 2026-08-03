@@ -33,10 +33,10 @@ spec:
       containers:
         - name: backend
 <<<<<<< HEAD
-          image: arya08/skillpulse-backend:latest
+          image: arya08/skillpulse-backend:3e1d3b13e8a285c104fe0419df23fee7e754a783
           imagePullPolicy: IfNotPresent
 =======
-          image: arya08/skillpulse-backend:8d8c2dc468ea39395165fcd2638507549fccea6c
+          image: arya08/skillpulse-backend:3e1d3b13e8a285c104fe0419df23fee7e754a783
           imagePullPolicy: Always
 >>>>>>> refs/remotes/origin/main
           ports:
