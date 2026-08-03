@@ -32,13 +32,8 @@ spec:
     spec:
       containers:
         - name: backend
-<<<<<<< HEAD
-          image: arya08/skillpulse-backend:3e1d3b13e8a285c104fe0419df23fee7e754a783
+          image: arya08/skillpulse-backend:latest
           imagePullPolicy: IfNotPresent
-=======
-          image: arya08/skillpulse-backend:3e1d3b13e8a285c104fe0419df23fee7e754a783
-          imagePullPolicy: Always
->>>>>>> refs/remotes/origin/main
           ports:
             - name: http
               containerPort: 8080
