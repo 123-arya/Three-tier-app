@@ -19,7 +19,7 @@ services:
       retries: 10
       start_period: 30s
   backend:
-    image: ${DOCKERHUB_USERNAME}/skillpulse-backend:v2
+    image: ${DOCKERHUB_USERNAME}/skillpulse-backend:latest
     build:
       context: ./backend
     restart: unless-stopped
@@ -35,7 +35,7 @@ services:
       db:
         condition: service_healthy
   frontend:
-    image: ${DOCKERHUB_USERNAME}/skillpulse-frontend:v2
+    image: ${DOCKERHUB_USERNAME}/skillpulse-frontend:latest
     build:
       context: ./frontend
     restart: unless-stopped

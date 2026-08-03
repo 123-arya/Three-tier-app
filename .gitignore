@@ -1,19 +1,30 @@
-.env    
+# Kubernetes
+kubectl
 
-.DS_Store
-Thumbs.db
+# SHA256 checksum files
+*.sha256
 
-.vscode
-.idea
-*.swp
+# Temporary/editor files
+~
 
-
+# Terraform
 .terraform/
 *.tfstate
-*.tfstate.backup
-*.tfplan
-*.terraform-key.pub
-*.terraform-key
+*.tfstate.*
+.terraform.lock.hcl
 
+# Environment / secrets
+.env
+.env.*
 *.pem
-*.pub
+
+# Kubernetes secrets/local files
+*.secret.yaml
+
+# Logs
+*.log
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
