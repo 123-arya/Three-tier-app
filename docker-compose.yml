@@ -19,7 +19,7 @@ services:
       retries: 10
       start_period: 30s
   backend:
-    image: ${DOCKERHUB_USERNAME}/skillpulse-backend:latest
+    image: ${DOCKERHUB_USERNAME}/skillpulse-backend:IMAGE_TAG
     build:
       context: ./backend
     restart: unless-stopped
