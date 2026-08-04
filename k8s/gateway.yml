@@ -47,7 +47,7 @@ spec:
   parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: bankapp-gateway
+      name: skillpulse-gateway
       sectionName: https
     - group: gateway.networking.k8s.io
       kind: Gateway
@@ -81,4 +81,4 @@ spec:
       type: Cookie
       cookie:
         name: SKILLPULSE_AFFINITY
-        ttl: 3600s
+        ttl: 120s
