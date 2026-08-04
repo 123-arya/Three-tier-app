@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: arya08/skillpulse-frontend:e80240ed3e529126c62b23121a0f9512456f42f1
+          image: arya08/skillpulse-frontend:a220fda45ffc09fae610a03d9eadf4630e2eb09e
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
