@@ -33,9 +33,9 @@ spec:
       containers:
         - name: backend
 <<<<<<< HEAD
-          image: arya08/skillpulse-backend:bbd630fac5c4f6f98c3de1bbc6bb22635a383476
+          image: arya08/skillpulse-backend:a2a6773057f1c49db0005fb548333da2ee637c4f
 =======
-          image: arya08/skillpulse-backend:latest
+          image: arya08/skillpulse-backend:a2a6773057f1c49db0005fb548333da2ee637c4f
 >>>>>>> ba782ae (k8s)
           imagePullPolicy: IfNotPresent
           ports:
