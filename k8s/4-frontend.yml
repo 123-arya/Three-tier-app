@@ -7,13 +7,14 @@ metadata:
   labels:
     app: frontend
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: frontend
   ports:
     - name: http
       port: 80
       targetPort: 80
+      nodePort: 30080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -32,7 +33,11 @@ spec:
     spec:
       containers:
         - name: frontend
+<<<<<<< HEAD
           image: arya08/skillpulse-frontend:bbd630fac5c4f6f98c3de1bbc6bb22635a383476
+=======
+          image: arya08/skillpulse-frontend:latest
+>>>>>>> ba782ae (k8s)
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -43,7 +48,6 @@ spec:
               memory: 32Mi
             limits:
               memory: 64Mi
-              cpu: 100m
           livenessProbe:
             httpGet:
               path: /

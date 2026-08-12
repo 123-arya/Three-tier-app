@@ -10,7 +10,6 @@ stringData:
   MYSQL_DATABASE: skillpulse
   MYSQL_USER: skillpulse
   MYSQL_PASSWORD: skillpulse123
-
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -59,6 +58,19 @@ data:
         (5, 1.5, 'Terraform basics - providers, resources, state', '2026-03-17');
 
 ---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-gp3
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+reclaimPolicy: Retain
+parameters:
+  type: gp3
+  encrypted: "true"
+
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -74,20 +86,6 @@ spec:
     - name: mysql
       port: 3306
       targetPort: 3306
-
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: gp3
-provisioner: ebs.csi.aws.com
-parameters:
-  type: gp3
-  fsType: ext4
-reclaimPolicy: Delete
-volumeBindingMode: WaitForFirstConsumer
-allowVolumeExpansion: true
-
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -97,23 +95,9 @@ metadata:
 spec:
   serviceName: mysql
   replicas: 1
-
-  podManagementPolicy: OrderedReady
-  revisionHistoryLimit: 10
-
-  persistentVolumeClaimRetentionPolicy:
-    whenDeleted: Retain
-    whenScaled: Retain
-
-  updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      partition: 0
-
   selector:
     matchLabels:
       app: mysql
-
   template:
     metadata:
       labels:
@@ -123,65 +107,45 @@ spec:
         - name: mysql
           image: mysql:8.4
           imagePullPolicy: IfNotPresent
-
           ports:
             - name: mysql
               containerPort: 3306
-              protocol: TCP
-
           envFrom:
             - secretRef:
                 name: skillpulse-db
-
           volumeMounts:
             - name: data
               mountPath: /var/lib/mysql
-
             - name: init
               mountPath: /docker-entrypoint-initdb.d
               readOnly: true
-
           resources:
             requests:
               cpu: 100m
               memory: 256Mi
             limits:
               memory: 512Mi
-
           livenessProbe:
             tcpSocket:
               port: 3306
             initialDelaySeconds: 30
             periodSeconds: 10
-            timeoutSeconds: 1
-            successThreshold: 1
-            failureThreshold: 3
-
           readinessProbe:
             exec:
-              command:
-                - mysqladmin
-                - ping
-                - -h
-                - localhost
+              command: [mysqladmin, ping, -h, localhost]
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 3
-            successThreshold: 1
-            failureThreshold: 3
-
       volumes:
         - name: init
           configMap:
             name: mysql-init
-
   volumeClaimTemplates:
     - metadata:
         name: data
       spec:
-        storageClassName: gp3
-        accessModes:
-          - ReadWriteOnce
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: ebs-gp3
         resources:
           requests:
-            storage: 10Gi
+            storage: 1Gi

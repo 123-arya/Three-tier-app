@@ -32,7 +32,11 @@ spec:
     spec:
       containers:
         - name: backend
+<<<<<<< HEAD
           image: arya08/skillpulse-backend:bbd630fac5c4f6f98c3de1bbc6bb22635a383476
+=======
+          image: arya08/skillpulse-backend:latest
+>>>>>>> ba782ae (k8s)
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -64,7 +68,6 @@ spec:
               cpu: 100m
               memory: 64Mi
             limits:
-              cpu: 200m
               memory: 128Mi
           livenessProbe:
             httpGet:
